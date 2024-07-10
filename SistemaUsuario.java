@@ -7,11 +7,11 @@ public class SistemaUsuario {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        
         while (true) {
             System.out.println("Escolha uma opção:");
             System.out.println("1. Cadastrar usuário");
-            System.out.println("2. Fazer login");
+            System.out.println("2. Empréstimo de livros");
             System.out.println("3. Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -20,7 +20,7 @@ public class SistemaUsuario {
                 if (opcao == 1) {
                     cadastrarUsuario(scanner);
                 } else if (opcao == 2) {
-                    //fazerLogin(scanner);
+                    realizarEmprestimo(scanner);
                 } else if (opcao == 3) {
                     break;
                 } else {
@@ -71,22 +71,49 @@ public class SistemaUsuario {
             return;
         }
 
-           BufferedWriter writer = null;
-           try {
-               writer = new BufferedWriter(new FileWriter(ARQUIVO_USUARIOS, true));
-               writer.write(usuario.toString());
-               writer.newLine();
-               System.out.println("Usuário cadastrado com sucesso!");
-           } catch (IOException e) {
-               e.printStackTrace();
-           } finally {
-               if (writer != null) {
-                   try {
-                       writer.close();
-                   } catch (IOException e) {
-                       e.printStackTrace();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_USUARIOS, true))) {
+            writer.write(usuario.toString());
+            writer.newLine();
+            System.out.println("Usuário cadastrado com sucesso!");
+        }
+    }
+
+    public static void realizarEmprestimo(Scanner scanner) throws IOException {
+        System.out.println("Fazer login para empréstimo de livros:");
+        System.out.print("Login: ");
+        String login = scanner.nextLine();
+
+        Usuario usuario = fazerLogin(login);
+
+        if (usuario != null) {
+            System.out.println("Olá, " + usuario.getNome());
+            // Aqui você pode adicionar a lógica para o processo de empréstimo de livros
+        } else {
+            System.out.println("Login falhou.");
+        }
+    }
+
+    public static Usuario fazerLogin(String login) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                int id = Integer.parseInt(dados[0]);
+                String nome = dados[1];
+                String loginArquivo = dados[2];
+                boolean elegivel = Boolean.parseBoolean(dados[3]);
+
+                if (loginArquivo.equals(login)) {
+                    if (dados.length == 5) { // Estudante
+                        String numeroMatricula = dados[4];
+                        return new Estudante(id, nome, login, elegivel, numeroMatricula);
+                    } else if (dados.length == 6) { // Professor
+                        String nomeDepartamento = dados[5];
+                        return new Professor(id, nome, login, elegivel, nomeDepartamento);
+                    }
                 }
             }
         }
+        return null;
     }
 }
