@@ -1,2 +1,1 @@
-1,Thamires,mirexsl,true,Estudante,148726
 1,Thammires,thami,true,Estudante,14398
