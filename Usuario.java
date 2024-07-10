@@ -1,51 +1,24 @@
-public abstract class Usuario {
-    private int id;
-    private String nome;
-    private String login;
-    private boolean elegivel;
+abstract class Usuario {
+    protected int id;
+    protected String nome;
+    protected String login;
+    protected boolean elegivel;
+    protected String tipo; // Adicionando o campo tipo
 
-    public Usuario(int id, String nome, String login, boolean elegivel) {
+    public Usuario(int id, String nome, String login, boolean elegivel, String tipo) {
         this.id = id;
         this.nome = nome;
         this.login = login;
         this.elegivel = elegivel;
-    }
-
-    // Getters e setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.tipo = tipo;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public boolean isElegivel() {
-        return elegivel;
-    }
-
-    public void setElegivel(boolean elegivel) {
-        this.elegivel = elegivel;
-    }
-
     @Override
     public String toString() {
-        return id + "," + nome + "," + login + "," + elegivel;
+        return id + "," + nome + "," + login + "," + elegivel + "," + tipo;
     }
 }

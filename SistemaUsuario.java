@@ -94,26 +94,29 @@ public class SistemaUsuario {
     }
 
     public static Usuario fazerLogin(String login) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(",");
-                int id = Integer.parseInt(dados[0]);
-                String nome = dados[1];
-                String loginArquivo = dados[2];
-                boolean elegivel = Boolean.parseBoolean(dados[3]);
+    try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+        String linha;
+        while ((linha = reader.readLine()) != null) {
+            String[] dados = linha.split(",");
+            int id = Integer.parseInt(dados[0]);
+            String nome = dados[1];
+            String loginArquivo = dados[2];
+            boolean elegivel = Boolean.parseBoolean(dados[3]);
+            String tipo = dados[4];
 
-                if (loginArquivo.equals(login)) {
-                    if (dados.length == 5) { // Estudante
-                        String numeroMatricula = dados[4];
-                        return new Estudante(id, nome, login, elegivel, numeroMatricula);
-                    } else if (dados.length == 6) { // Professor
-                        String nomeDepartamento = dados[5];
-                        return new Professor(id, nome, login, elegivel, nomeDepartamento);
-                    }
+            if (loginArquivo.equals(login)) {
+                if (tipo.equals("Estudante")) { // Estudante
+                    String numeroMatricula = dados[5];
+                    return new Estudante(id, nome, login, elegivel, numeroMatricula);
+                } else if (tipo.equals("Professor")) { // Professor
+                    String nomeDepartamento = dados[5];
+                    return new Professor(id, nome, login, elegivel, nomeDepartamento);
                 }
             }
         }
-        return null;
     }
+    return null;
+  }
 }
+
+
