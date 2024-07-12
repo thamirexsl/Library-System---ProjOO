@@ -1,1 +1,2 @@
 1,Thammires,thami,true,Estudante,14398
+2,André,alc,true,Professor,História

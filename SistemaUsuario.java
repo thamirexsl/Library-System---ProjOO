@@ -1,17 +1,16 @@
 import java.io.*;
 import java.util.Scanner;
-
 public class SistemaUsuario {
 
     private static final String ARQUIVO_USUARIOS = "Users.txt";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
+
         while (true) {
             System.out.println("Escolha uma opção:");
             System.out.println("1. Cadastrar usuário");
-            System.out.println("2. Empréstimo de livros");
+            System.out.println("2. Fazer login");
             System.out.println("3. Sair");
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
@@ -20,7 +19,17 @@ public class SistemaUsuario {
                 if (opcao == 1) {
                     cadastrarUsuario(scanner);
                 } else if (opcao == 2) {
-                    realizarEmprestimo(scanner);
+                    Usuario usuario = fazerLogin(scanner);
+                    if (usuario != null) {
+                        System.out.println("Olá, " + usuario.getNome());
+                        if (usuario.getTipo().equals("Estudante")) {
+                            menuEstudante(scanner, usuario);
+                        } else if (usuario.getTipo().equals("Professor")) {
+                            menuProfessor(scanner, usuario);
+                        }
+                    } else {
+                        System.out.println("Login falhou.");
+                    }
                 } else if (opcao == 3) {
                     break;
                 } else {
@@ -78,45 +87,87 @@ public class SistemaUsuario {
         }
     }
 
-    public static void realizarEmprestimo(Scanner scanner) throws IOException {
-        System.out.println("Fazer login para empréstimo de livros:");
+    public static Usuario fazerLogin(Scanner scanner) throws IOException {
+        System.out.println("Fazer login:");
         System.out.print("Login: ");
         String login = scanner.nextLine();
 
-        Usuario usuario = fazerLogin(login);
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if (dados.length < 6) {
+                    continue; // Pula linhas que não têm o formato correto
+                }
 
-        if (usuario != null) {
-            System.out.println("Olá, " + usuario.getNome());
-            // Aqui você pode adicionar a lógica para o processo de empréstimo de livros
-        } else {
-            System.out.println("Login falhou.");
-        }
-    }
+                int id = Integer.parseInt(dados[0]);
+                String nome = dados[1];
+                String loginArquivo = dados[2];
+                boolean elegivel = Boolean.parseBoolean(dados[3]);
+                String tipo = dados[4];
 
-    public static Usuario fazerLogin(String login) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
-        String linha;
-        while ((linha = reader.readLine()) != null) {
-            String[] dados = linha.split(",");
-            int id = Integer.parseInt(dados[0]);
-            String nome = dados[1];
-            String loginArquivo = dados[2];
-            boolean elegivel = Boolean.parseBoolean(dados[3]);
-            String tipo = dados[4];
-
-            if (loginArquivo.equals(login)) {
-                if (tipo.equals("Estudante")) { // Estudante
-                    String numeroMatricula = dados[5];
-                    return new Estudante(id, nome, login, elegivel, numeroMatricula);
-                } else if (tipo.equals("Professor")) { // Professor
-                    String nomeDepartamento = dados[5];
-                    return new Professor(id, nome, login, elegivel, nomeDepartamento);
+                if (loginArquivo.equals(login)) {
+                    if (tipo.equals("Estudante")) {
+                        String numeroMatricula = dados[5];
+                        return new Estudante(id, nome, login, elegivel, numeroMatricula);
+                    } else if (tipo.equals("Professor")) {
+                        String nomeDepartamento = dados[5];
+                        return new Professor(id, nome, login, elegivel, nomeDepartamento);
+                    }
                 }
             }
         }
+
+        return null;
     }
-    return null;
-  }
+
+    public static void menuEstudante(Scanner scanner, Usuario usuario) {
+        while (true) {
+            System.out.println("Menu Estudante:");
+            System.out.println("1. Empréstimo de livros");
+            System.out.println("2. Devolução de livros");
+            System.out.println("3. Retornar ao menu inicial");
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Consumir nova linha
+
+            if (opcao == 1) {
+                System.out.println("Realizando empréstimo de livros...");
+                // Adicione aqui a lógica para empréstimo de livros
+            } else if (opcao == 2) {
+                System.out.println("Realizando devolução de livros...");
+                // Adicione aqui a lógica para devolução de livros
+            } else if (opcao == 3) {
+                break;
+            } else {
+                System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
+
+    public static void menuProfessor(Scanner scanner, Usuario usuario) {
+        while (true) {
+            System.out.println("Menu Professor:");
+            System.out.println("1. Empréstimo de livros");
+            System.out.println("2. Devolução de livros");
+            System.out.println("3. Editar acervo");
+            System.out.println("4. Retornar ao menu inicial");
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Consumir nova linha
+
+            if (opcao == 1) {
+                System.out.println("Realizando empréstimo de livros...");
+                // Adicione aqui a lógica para empréstimo de livros
+            } else if (opcao == 2) {
+                System.out.println("Realizando devolução de livros...");
+                // Adicione aqui a lógica para devolução de livros
+            } else if (opcao == 3) {
+                System.out.println("Realizando devolução de livros...");
+                break;
+            }else if (opcao == 4) {
+                break; 
+            }else {
+                System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
 }
-
-

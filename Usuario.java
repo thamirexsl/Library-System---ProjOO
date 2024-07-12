@@ -16,6 +16,13 @@ abstract class Usuario {
     public String getNome() {
         return nome;
     }
+     public String getLogin() {
+        return login;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
 
     @Override
     public String toString() {
