@@ -6,12 +6,12 @@ import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
-    IBuscarLivro exCat = new ExternalCatalogAdapter();
+    SistemaUsuario.main(args);
 
-    List<Livro> livros = exCat.buscarDescricao("descricao3");
+    // IBuscarLivro extCat = new ExternalCatalogAdapter();
 
-    for (Livro livro : livros) {
-      System.out.println(livro.toString());
-    }
+    // List<Livro> l = extCat.buscarAutor("Tolkien");
+
+    // extCat.enumCatalog(l);
   }
 }

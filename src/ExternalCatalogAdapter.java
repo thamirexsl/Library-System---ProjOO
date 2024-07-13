@@ -40,15 +40,23 @@ public class ExternalCatalogAdapter implements IBuscarLivro{
         return livrosRet;
     }
 
-    // Método para buscar livros pelo descricao
-    public List<Livro> buscarDescricao(String _palavra) {
+    // Método para buscar livros pelo categoria
+    public List<Livro> buscarCategoria(String _palavra) {
         List<Livro> livrosRet = new ArrayList<>();
 
         for (Livro livro : this.livros) {
-            if (livro.getDescricao().contains(_palavra.toLowerCase())){
+            if (livro.getCategoria().contains(_palavra.toLowerCase())){
                 livrosRet.add(livro);
             }
         }
         return livrosRet;
+    }
+
+    // Exibe a lista de livros e enumera
+    public void enumCatalog(List<Livro> _listLiv){
+        int index = 1;
+        for (Livro livro : _listLiv) {
+            System.out.println((index++)+ ". " + livro.toString());
+        }
     }
 }

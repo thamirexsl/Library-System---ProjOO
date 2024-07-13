@@ -1,9 +1,10 @@
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class SistemaUsuario {
 
-    private static final String ARQUIVO_USUARIOS = "Users.txt";
+    private static final String ARQUIVO_USUARIOS = "src/txt/Users.txt";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -82,41 +83,107 @@ public class SistemaUsuario {
         System.out.println("Fazer login para empréstimo de livros:");
         System.out.print("Login: ");
         String login = scanner.nextLine();
+        IBuscarLivro exCat = new ExternalCatalogAdapter();
 
         Usuario usuario = fazerLogin(login);
-
+        
         if (usuario != null) {
             System.out.println("Olá, " + usuario.getNome());
-            // Aqui você pode adicionar a lógica para o processo de empréstimo de livros
+
+    
+            List<Livro> livros;
+            while (true) {
+                System.out.println("Escolha uma opção para encontrar seu livro:");
+                System.out.println("1. Buscar pelo título");
+                System.out.println("2. Buscar pelo autor");
+                System.out.println("3. Buscar pela categoria");
+                System.out.println("4. Sair");
+                int opcaoBusca = scanner.nextInt();
+                scanner.nextLine(); // Consumir nova linha
+
+    
+                if (opcaoBusca == 1) {
+                    System.out.println("Qual título do livro que busca?");
+                    String tituloLivro = scanner.nextLine();
+
+                    List<Livro> livroEncontrados = exCat.buscarTitulo(tituloLivro);
+                    exCat.enumCatalog(livroEncontrados);
+                    System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                    int numLivro = scanner.nextInt();
+                    scanner.nextLine(); // Consumir nova linha
+
+                    if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                        livroEncontrados.get(numLivro-1).emprestarLivro();
+                    } else {
+                        continue;
+                    }
+                } else if (opcaoBusca == 2) {
+                    System.out.println("Qual autor do livro que busca?");
+                    String autorLivro = scanner.nextLine();
+
+                    List<Livro> livroEncontrados = exCat.buscarAutor(autorLivro);
+                    exCat.enumCatalog(livroEncontrados);
+                    System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                    int numLivro = scanner.nextInt();
+                    scanner.nextLine(); // Consumir nova linha
+
+                    if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                        livroEncontrados.get(numLivro-1).emprestarLivro();
+                    } else {
+                        continue;
+                    }
+                } else if (opcaoBusca == 3) {
+                    System.out.println("Qual categoria do livro que busca?");
+                    String categoriaLivro = scanner.nextLine();
+
+                    List<Livro> livroEncontrados = exCat.buscarCategoria(categoriaLivro);
+                    exCat.enumCatalog(livroEncontrados);
+                    System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                    int numLivro = scanner.nextInt();
+                    scanner.nextLine(); // Consumir nova linha
+
+                    if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                        livroEncontrados.get(numLivro-1).emprestarLivro();
+                    } else {
+                        continue;
+                    }
+                } else if (opcaoBusca == 4) {
+                    System.out.println("Retornando ao menu!");
+                    break;
+                }else {
+                    System.out.println("Opção inválida. Tente novamente.");
+                }
+            }
+
         } else {
             System.out.println("Login falhou.");
         }
     }
 
     public static Usuario fazerLogin(String login) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
-        String linha;
-        while ((linha = reader.readLine()) != null) {
-            String[] dados = linha.split(",");
-            int id = Integer.parseInt(dados[0]);
-            String nome = dados[1];
-            String loginArquivo = dados[2];
-            boolean elegivel = Boolean.parseBoolean(dados[3]);
-            String tipo = dados[4];
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_USUARIOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                int id = Integer.parseInt(dados[0]);
+                String nome = dados[1];
+                String loginArquivo = dados[2];
+                boolean elegivel = Boolean.parseBoolean(dados[3]);
+                String tipo = dados[4];
 
-            if (loginArquivo.equals(login)) {
-                if (tipo.equals("Estudante")) { // Estudante
-                    String numeroMatricula = dados[5];
-                    return new Estudante(id, nome, login, elegivel, numeroMatricula);
-                } else if (tipo.equals("Professor")) { // Professor
-                    String nomeDepartamento = dados[5];
-                    return new Professor(id, nome, login, elegivel, nomeDepartamento);
+                if (loginArquivo.equals(login)) {
+                    if (tipo.equals("Estudante")) { // Estudante
+                        String numeroMatricula = dados[5];
+                        return new Estudante(id, nome, login, elegivel, numeroMatricula);
+                    } else if (tipo.equals("Professor")) { // Professor
+                        String nomeDepartamento = dados[5];
+                        return new Professor(id, nome, login, elegivel, nomeDepartamento);
+                    }
                 }
             }
         }
+        return null;
     }
-    return null;
-  }
 }
 
 

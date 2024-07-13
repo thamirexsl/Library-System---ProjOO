@@ -1,0 +1,12 @@
+{"Livros": [
+{"id": 1,"titulo":"Dom Casmurro","autor":"Machado de Assis","categoria":"Romance clássico / Literatura Brasileira","quantidade":1},
+{"id": 2,"titulo":"1984","autor":"George Orwell","categoria":"Distopia / Ficção Política","quantidade":2},
+{"id": 3,"titulo":"Orgulho e Preconceito","autor":"Jane Austen","categoria":"Romance clássico / Literatura Inglesa","quantidade":3},
+{"id": 4,"titulo":"O Senhor dos Anéis: A Sociedade do Anel","autor":"J.R.R. Tolkien","categoria":"Fantasia / Literatura Epica","quantidade":4},
+{"id": 5,"titulo":"A Revolução dos Bichos","autor":"George Orwell","categoria":"Fábula / Literatura Política","quantidade":5},
+{"id": 6,"titulo":"Cem Anos de Solidão","autor":"Gabriel García Márquez","categoria":"Realismo mágico / Literatura Latino-Americana","quantidade":6},
+{"id": 7,"titulo":"O Sol é Para Todos","autor":"Harper Lee","categoria":"Romance / Literatura Americana / Drama Social","quantidade":7},
+{"id": 8,"titulo":"O Hobbit","autor":"J.R.R. Tolkien","categoria":"Fantasia / Literatura Infantojuvenil","quantidade":8},
+{"id": 9,"titulo":"A Menina que Roubava Livros","autor":"Markus Zusak","categoria":"Ficção histórica / Drama / Literatura Contemporânea","quantidade":9},
+{"id": 10,"titulo":"A Casa dos Espíritos","autor":"Isabel Allende","categoria":"Realismo mágico / Ficção histórica / Literatura Latino-Americana","quantidade":10}
+]}

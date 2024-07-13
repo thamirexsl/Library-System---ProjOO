@@ -9,7 +9,7 @@ public class bibliotecaLeJSON {
 
     // Método para transformar o BD em objetos
     public static List<Livro> run() {
-        String arquivoJSON = "src/json/teste.json";
+        String arquivoJSON = "src/json/livrosCatalogo.json";
         BufferedReader br = null;
         String linha = "";
         List<Livro> livros = new ArrayList<>();
@@ -49,10 +49,11 @@ public class bibliotecaLeJSON {
             int id = Integer.parseInt(parts[0].replace("{\"id\": ", ""));
             String titulo  = parts[1].replace("\"titulo\":\"", "").replace("\"", "");
             String autor = parts[2].replace("\"autor\":\"", "").replace("\"", "");
-            String descricao = parts[3].replace("\"descricao\":\"", "").replace("\"", "").replace("}", "").replace(",", "");
-    
-            // System.out.println(id + "; " + titulo + "; " + autor + "; " + descricao);
-            return new Livro(id, titulo, autor, descricao);
+            String categoria = parts[3].replace("\"categoria\":\"", "").replace("\"", "");
+            int quantidade = Integer.parseInt(parts[4].replace("quantidade", "").replace("\"", "").replace(":", "").replace("}", "").replace(" ", ""));
+
+            // System.out.println(id + "; " + titulo + "; " + autor + "; " + categoria + "; " + quantidade);
+            return new Livro(id, titulo, autor, categoria, quantidade);
     }
 }
 
