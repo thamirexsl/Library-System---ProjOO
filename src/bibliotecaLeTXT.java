@@ -2,23 +2,25 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class bibliotecaLeTXT {
-  public static String[] run() {
-    String arquivoCSV = "src/main/java/test.txt";
+
+  // Método para transformar o BD em objetos
+  public static List<Livro> run() {
+    String arquivoCSV = "src/txt/test.txt";
     BufferedReader br = null;
     String linha = "";
     String csvDivisor = ",";
-    String[] livros = new String[0];
+    List<Livro> livros = new ArrayList<>();
 
     try {
       br = new BufferedReader(new FileReader(arquivoCSV));
       while ((linha = br.readLine()) != null) {
         String[] temp = linha.split(csvDivisor);
-        livros = Arrays.copyOf(livros, livros.length + temp.length);
-        System.arraycopy(temp, 0, livros, livros.length - temp.length, temp.length);
-        // System.out.println("Livro [Nome= " + temp[temp.length-3] + " , Autor=" +
+        livros.add(fromString( Integer.valueOf(temp[temp.length-4]),  temp[temp.length-3],  temp[temp.length-2],  temp[temp.length-1]));
+        // System.out.println("Livro [id= " + temp[temp.length-4] + ", Nome= " + temp[temp.length-3] + " , Autor=" +
         // temp[temp.length-2] + " , Descricao=" + temp[temp.length-1] + "]");
       }
     } catch (FileNotFoundException e) {
@@ -36,5 +38,11 @@ public class bibliotecaLeTXT {
     }
     return livros;
   }
+
+    // Método para converter a string de volta para o objeto
+    public static Livro fromString(int _id, String _titulo, String _autor, String _descricao) {
+      // System.out.println(id + "; " + titulo + "; " + autor + "; " + descricao);
+      return new Livro(_id, _titulo, _autor, _descricao);
+    }
 
 }

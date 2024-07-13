@@ -2,18 +2,16 @@
 
 // import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class Main {
   public static void main(String[] args) {
+    IBuscarLivro exCat = new ExternalCatalogAdapter();
 
-    String livros[] = bibliotecaLeTXT.run();
-    System.out.println("Livro [Nome= " + livros[livros.length - 6] + " , Autor=" + livros[livros.length - 5]
-        + " , Descricao=" + livros[livros.length - 4] + "]");
+    List<Livro> livros = exCat.buscarDescricao("descricao3");
 
-    bibliotecaLeJSON.main(args);
+    for (Livro livro : livros) {
+      System.out.println(livro.toString());
+    }
   }
-
-  // @Test
-  // void addition() {
-  // assertEquals(2, 1 + 1);
-  // }
 }
