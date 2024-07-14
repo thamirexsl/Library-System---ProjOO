@@ -1,0 +1,10 @@
+1,O Grande Gatsby,F. Scott Fitzgerald,Romance / Literatura Americana / Modernismo,1
+2,O Morro dos Ventos Uivantes,Emily Brontë,Romance / Literatura Inglesa / Gótico,2
+3,Frankenstein,Mary Shelley,Ficção Científica / Literatura Gótica,3
+4,O Apanhador no Campo de Centeio,J.D. Salinger,Romance / Literatura Americana / Literatura Juvenil,4
+5,A Ilha do Tesouro,Robert Louis Stevenson,Aventura / Literatura Infantojuvenil,5
+6,O Código Da Vinci,Dan Brown,Thriller / Ficção Contemporânea,6
+7,O Morro dos Ventos Uivantes,Emily Brontë,Romance / Literatura Inglesa / Gótico,7
+8,Beloved,Toni Morrison,Ficção Histórica / Literatura Americana / Realismo,8
+9,O Lobo da Estepe,Hermann Hesse,Romance / Literatura Alemã / Existencialismo,9
+10,O Processo,Franz Kafka,Ficção / Literatura Alemã / Existencialismo,10
