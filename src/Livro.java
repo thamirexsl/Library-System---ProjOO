@@ -41,4 +41,8 @@ class Livro {
             System.out.println("Os exemplares do titulo: " + this.titulo + " acabaram.");
         }
     }
+
+    public void devolverLivro(){
+        this.quantidade = this.quantidade + 1;
+    }
 }

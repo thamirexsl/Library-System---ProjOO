@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 public class SistemaUsuario {
 
@@ -22,11 +23,7 @@ public class SistemaUsuario {
                     Usuario usuario = fazerLogin(scanner);
                     if (usuario != null) {
                         System.out.println("Olá, " + usuario.getNome());
-                        if (usuario.getTipo().equals("Estudante")) {
-                            menuEstudante(scanner, usuario);
-                        } else if (usuario.getTipo().equals("Professor")) {
-                            menuProfessor(scanner, usuario);
-                        }
+                        menuEmprestimo(scanner, usuario);
                     } else {
                         System.out.println("Login falhou.");
                     }
@@ -85,6 +82,9 @@ public class SistemaUsuario {
             writer.newLine();
             System.out.println("Usuário cadastrado com sucesso!");
         }
+
+        DadosDeEmprestimo dados = new DadosDeEmprestimo();
+        dados.insereNovoUsuario(usuario);
     }
 
     public static Usuario fazerLogin(Scanner scanner) throws IOException {
@@ -121,9 +121,13 @@ public class SistemaUsuario {
         return null;
     }
 
-    public static void menuEstudante(Scanner scanner, Usuario usuario) {
+    public static void menuEmprestimo(Scanner scanner, Usuario usuario) throws IOException {
         while (true) {
-            System.out.println("Menu Estudante:");
+            if (usuario.getTipo().equals("Estudante")) {
+                System.out.println("Menu Estudante:");
+            } else if (usuario.getTipo().equals("Professor")){
+                System.out.println("Menu Estudante:");
+            }
             System.out.println("1. Empréstimo de livros");
             System.out.println("2. Devolução de livros");
             System.out.println("3. Retornar ao menu inicial");
@@ -132,10 +136,10 @@ public class SistemaUsuario {
 
             if (opcao == 1) {
                 System.out.println("Realizando empréstimo de livros...");
-                // Adicione aqui a lógica para empréstimo de livros
+                realizarEmprestimo(scanner, usuario);
             } else if (opcao == 2) {
                 System.out.println("Realizando devolução de livros...");
-                // Adicione aqui a lógica para devolução de livros
+                devolverEmprestimo(scanner, usuario);
             } else if (opcao == 3) {
                 break;
             } else {
@@ -144,29 +148,117 @@ public class SistemaUsuario {
         }
     }
 
-    public static void menuProfessor(Scanner scanner, Usuario usuario) {
+    public static void realizarEmprestimo(Scanner scanner, Usuario usuario) throws IOException {
+        IBuscarLivro exCat = new ExternalCatalogAdapter();
+        DadosDeEmprestimo dados = new DadosDeEmprestimo();
+
         while (true) {
-            System.out.println("Menu Professor:");
-            System.out.println("1. Empréstimo de livros");
-            System.out.println("2. Devolução de livros");
-            System.out.println("3. Editar acervo");
-            System.out.println("4. Retornar ao menu inicial");
-            int opcao = scanner.nextInt();
+            System.out.println("Escolha uma opção para encontrar seu livro:");
+            System.out.println("1. Buscar pelo título");
+            System.out.println("2. Buscar pelo autor");
+            System.out.println("3. Buscar pela categoria");
+            System.out.println("4. Sair");
+            int opcaoBusca = scanner.nextInt();
             scanner.nextLine(); // Consumir nova linha
 
-            if (opcao == 1) {
-                System.out.println("Realizando empréstimo de livros...");
-                // Adicione aqui a lógica para empréstimo de livros
-            } else if (opcao == 2) {
-                System.out.println("Realizando devolução de livros...");
-                // Adicione aqui a lógica para devolução de livros
-            } else if (opcao == 3) {
-                System.out.println("Realizando devolução de livros...");
+
+            if (opcaoBusca == 1) {
+                System.out.println("Qual título do livro que busca?");
+                String tituloLivro = scanner.nextLine();
+
+                List<Livro> livroEncontrados = exCat.buscarTitulo(tituloLivro);
+                exCat.enumCatalog(livroEncontrados);
+                System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                int numLivro = scanner.nextInt();
+                scanner.nextLine(); // Consumir nova linha
+
+                if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                    livroEncontrados.get(numLivro-1).emprestarLivro();
+                    boolean result = dados.salvaEmprestimos(usuario, livroEncontrados.get(numLivro-1));
+                    if (result) {
+                        System.out.println("Livro emprestado!");
+                    } else {
+                        System.out.println("Livro não pode ser emprestado!");
+                    }
+                } else {
+                    continue;
+                }
+            } else if (opcaoBusca == 2) {
+                System.out.println("Qual autor do livro que busca?");
+                String autorLivro = scanner.nextLine();
+
+                List<Livro> livroEncontrados = exCat.buscarAutor(autorLivro);
+                exCat.enumCatalog(livroEncontrados);
+                System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                int numLivro = scanner.nextInt();
+                scanner.nextLine(); // Consumir nova linha
+
+                if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                    livroEncontrados.get(numLivro-1).emprestarLivro();
+                    boolean result = dados.salvaEmprestimos(usuario, livroEncontrados.get(numLivro-1));
+                    if (result) {
+                        System.out.println("Livro emprestado!");
+                    } else {
+                        System.out.println("Livro não pode ser emprestado!");
+                    }
+                } else {
+                    continue;
+                }
+            } else if (opcaoBusca == 3) {
+                System.out.println("Qual categoria do livro que busca?");
+                String categoriaLivro = scanner.nextLine();
+
+                List<Livro> livroEncontrados = exCat.buscarCategoria(categoriaLivro);
+                exCat.enumCatalog(livroEncontrados);
+                System.out.println((livroEncontrados.size() + 1) + ". Continuar buscando.\nEstes são os resultados de sua busca.\nEscolha uma opção:");
+                int numLivro = scanner.nextInt();
+                scanner.nextLine(); // Consumir nova linha
+
+                if ((numLivro > 0) && (numLivro != livroEncontrados.size() + 1)){
+                    livroEncontrados.get(numLivro-1).emprestarLivro();
+                    boolean result = dados.salvaEmprestimos(usuario, livroEncontrados.get(numLivro-1));
+                    if (result) {
+                        System.out.println("Livro emprestado!");
+                    } else {
+                        System.out.println("Livro não pode ser emprestado!");
+                    }
+                } else {
+                    continue;
+                }
+            } else if (opcaoBusca == 4) {
+                System.out.println("Retornando ao menu!");
                 break;
-            }else if (opcao == 4) {
-                break; 
             }else {
                 System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
+
+    public static void devolverEmprestimo(Scanner scanner, Usuario usuario) throws IOException {
+        IBuscarLivro exCat = new ExternalCatalogAdapter();
+        DadosDeEmprestimo dados = new DadosDeEmprestimo();
+
+        List<Livro> livrosEmprestados;
+        while (true) {
+            System.out.println("Qual livro gostaria de devolver?");
+            livrosEmprestados = dados.retornaEmprestados(usuario, exCat.buscarTitulo(""));
+
+            System.out.println((livrosEmprestados.size() + 1) + ". Retornar.\nEscolha uma opção:");
+            int numLivro = scanner.nextInt();
+            scanner.nextLine(); // Consumir nova linha
+
+            if ((numLivro > 0) && (numLivro != livrosEmprestados.size() + 1)){
+                livrosEmprestados.get(numLivro-1).devolverLivro();
+                boolean result = dados.devolverEmprestimos(usuario, livrosEmprestados.get(numLivro-1));
+                if (result) {
+                    System.out.println("Livro Devolvido!");
+                } else {
+                    System.out.println("Livro não pode ser Devolvido!");
+                }
+            } else if (numLivro == livrosEmprestados.size() + 1){
+                break;
+            }else {
+                continue;
             }
         }
     }

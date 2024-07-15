@@ -2,16 +2,12 @@
 
 // import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
-  public static void main(String[] args) {
-    SistemaUsuario.main(args);
-
-    // IBuscarLivro extCat = new ExternalCatalogAdapter();
-
-    // List<Livro> l = extCat.buscarAutor("Tolkien");
-
-    // extCat.enumCatalog(l);
+  public static void main(String[] args) throws FileNotFoundException, IOException {
+    SistemaUsuario.main(args);1
   }
 }

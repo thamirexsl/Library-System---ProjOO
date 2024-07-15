@@ -3,7 +3,7 @@ abstract class Usuario {
     protected String nome;
     protected String login;
     protected boolean elegivel;
-    protected String tipo; // Adicionando o campo tipo
+    protected String tipo; // Adicionando o campo tipoz
 
     public Usuario(int id, String nome, String login, boolean elegivel, String tipo) {
         this.id = id;
@@ -22,6 +22,10 @@ abstract class Usuario {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getId() {
+        return Integer.toString(id);
     }
 
     @Override
