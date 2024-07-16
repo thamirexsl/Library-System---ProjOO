@@ -9,7 +9,7 @@ public class bibliotecaLeTXT {
 
   // Método para transformar o BD em objetos
   public static List<Livro> run() {
-    String arquivoCSV = "src/txt/livrosCatalogo.txt";
+    String arquivoCSV = "txt/livrosCatalogo.txt";
     BufferedReader br = null;
     String linha = "";
     String csvDivisor = ",";

@@ -1,11 +1,11 @@
-abstract class Usuario {
-    protected int id;
+public abstract class Usuario {
+    protected String id;
     protected String nome;
     protected String login;
     protected boolean elegivel;
     protected String tipo; // Adicionando o campo tipoz
 
-    public Usuario(int id, String nome, String login, boolean elegivel, String tipo) {
+    public Usuario(String id, String nome, String login, boolean elegivel, String tipo) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -25,7 +25,7 @@ abstract class Usuario {
     }
 
     public String getId() {
-        return Integer.toString(id);
+        return id;
     }
 
     @Override

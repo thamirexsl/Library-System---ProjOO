@@ -1,7 +1,7 @@
-class Estudante extends Usuario {
+public class Estudante extends Usuario {
     private String numeroMatricula;
 
-    public Estudante(int id, String nome, String login, boolean elegivel, String numeroMatricula) {
+    public Estudante(String id, String nome, String login, boolean elegivel, String numeroMatricula) {
         super(id, nome, login, elegivel, "Estudante");
         this.numeroMatricula = numeroMatricula;
     }

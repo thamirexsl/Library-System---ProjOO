@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DadosDeEmprestimo {
-    private static final String dadosDeEmprestimoTxt = "src/txt/llistaDeEmprestimos.txt";
+    private static final String dadosDeEmprestimoTxt = "txt/llistaDeEmprestimos.txt";
 
     public DadosDeEmprestimo(){
         System.err.println("");
@@ -51,8 +51,8 @@ public class DadosDeEmprestimo {
         String fileContents = buffer.toString();
         sc.close();
 
-        fileContents = fileContents.replaceAll(oldLine, newLine);
-
+        fileContents = fileContents.replace(oldLine, newLine);
+        
         FileWriter writer = new FileWriter(dadosDeEmprestimoTxt);
         writer.append(fileContents);
         writer.flush();
@@ -67,13 +67,13 @@ public class DadosDeEmprestimo {
                     continue; // Pula linhas que não têm o formato correto
                 }
                 
-                int id = Integer.parseInt(dados[0]);
+                String id = dados[0]; //1,1,thami,^
                 String usuarioID = dados[1];
                 String usuarioLogin = dados[2];
-                String livros = dados[3].replaceAll("^ ", "");
+                String livros = dados[3].replace("^", "");
 
                 if ((usuarioID.equalsIgnoreCase(usuario.getId())) && (usuarioLogin.equalsIgnoreCase(usuario.getLogin())) && (!livros.contains(livro.getTitulo()))){
-                    String strOutput = Integer.toString(id) + "," + usuarioID + "," + usuarioLogin + "," + livros + " " + livro.getTitulo() + "";
+                    String strOutput = id + "," + usuarioID + "," + usuarioLogin + "," + livros + " " + livro.getTitulo() + "- ";
                     substituiLinha(linha, strOutput);
                     return true;
                 }
@@ -91,17 +91,17 @@ public class DadosDeEmprestimo {
                     continue; // Pula linhas que não têm o formato correto
                 }
                 
-                int id = Integer.parseInt(dados[0]);
+                String id = (dados[0]);
                 String usuarioID = dados[1];
                 String usuarioLogin = dados[2];
                 String livros = dados[3].replaceAll("^ ", "");
 
                 if ((usuarioID.equalsIgnoreCase(usuario.getId())) && (usuarioLogin.equalsIgnoreCase(usuario.getLogin())) && (livros.contains(livro.getTitulo()))){
-                    livros = livros.replace(livro.getTitulo(), "");
+                    livros = livros.replace((livro.getTitulo() + " - "), "");
                     if (livros == ""){
                         livros = " ";
                     }
-                    String strOutput = Integer.toString(id) + "," + usuarioID + "," + usuarioLogin + "," + livros;
+                    String strOutput = id + "," + usuarioID + "," + usuarioLogin + "," + livros;
                     substituiLinha(linha, strOutput);
                     return true;
                 }
@@ -111,13 +111,15 @@ public class DadosDeEmprestimo {
     }
     
     public List<Livro> listaDeLivros(List<Livro> livrosCat, String livros){
-        List<Livro> l = new ArrayList<>();
-        for (Livro livro : livrosCat) {
-            if (livro.getTitulo().contains(livros)){
-                livros = livros.replace(livro.getTitulo(), "");
-                l.add(livro);
+       List<Livro> l = new ArrayList<>();
+        String[] livrosEmprestados = livros.split("-");
+        for (String livroEmprestado: livrosEmprestados) {
+            for (Livro livro : livrosCat) {
+                if (livroEmprestado.toLowerCase().contains(livro.getTitulo().toLowerCase())){
+                    l.add(livro);
+                    break;
+                }
             }
-
         }
         return l;
     }
@@ -133,10 +135,10 @@ public class DadosDeEmprestimo {
                     continue; // Pula linhas que não têm o formato correto
                 }
                 
-                int id = Integer.parseInt(dados[0]);
+                String id = dados[0];
                 String usuarioID = dados[1];
                 String usuarioLogin = dados[2];
-                String livros = dados[3].replaceAll("^ ", "");
+                String livros = dados[3].replace("^ ", "");
 
                 if ((usuarioID.equalsIgnoreCase(usuario.getId())) && (usuarioLogin.equalsIgnoreCase(usuario.getLogin()))){
                     return listaDeLivros(livrosCat, livros);

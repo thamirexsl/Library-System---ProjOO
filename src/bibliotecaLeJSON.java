@@ -9,7 +9,7 @@ public class bibliotecaLeJSON {
 
     // Método para transformar o BD em objetos
     public static List<Livro> run() {
-        String arquivoJSON = "src/json/livrosCatalogo.json";
+        String arquivoJSON = "json/livrosCatalogo.json";
         BufferedReader br = null;
         String linha = "";
         List<Livro> livros = new ArrayList<>();

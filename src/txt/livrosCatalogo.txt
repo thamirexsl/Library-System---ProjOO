@@ -1,5 +1,5 @@
 1,O Grande Gatsby,F. Scott Fitzgerald,Romance / Literatura Americana / Modernismo,1
-2,O Morro dos Ventos Uivantes,Emily Brontë,Romance / Literatura Inglesa / Gótico,2
+2,O Diário de Anne Frank,Anne Frank,Biografia / Literatura Alemã / Segunda Guerra Mundial,2
 3,Frankenstein,Mary Shelley,Ficção Científica / Literatura Gótica,3
 4,O Apanhador no Campo de Centeio,J.D. Salinger,Romance / Literatura Americana / Literatura Juvenil,4
 5,A Ilha do Tesouro,Robert Louis Stevenson,Aventura / Literatura Infantojuvenil,5
